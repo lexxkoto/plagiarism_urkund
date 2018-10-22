@@ -696,8 +696,9 @@ class plagiarism_plugin_urkund extends plagiarism_plugin {
                     }
                 }
             }
+            return $result;
         }
-        return $result;
+        
 
         if (isset($plagiarismvalues['urkund_draft_submit']) &&
             $plagiarismvalues['urkund_draft_submit'] == PLAGIARISM_URKUND_DRAFTSUBMIT_FINAL) {
@@ -1724,8 +1725,8 @@ function plagiarism_urkund_get_file_object($plagiarismfile) {
                 mtrace("URKUND fileid:" . $plagiarismfile->id . " coursework found");
             }
             $cm = get_coursemodule_from_id('coursework', $plagiarismfile->cm, 0, false, MUST_EXIST);
-            mtrace('CMID is '.print_r($cm, true));
-            mtrace('Module context ID is '.$modulecontext->id);
+            //mtrace('CMID is '.print_r($cm, true));
+            //mtrace('Module context ID is '.$modulecontext->id);
             // TODO: Get submission ID from mdl_coursework_submissions for the given user on the given
             // module, and put it below where $cm->instance currently is!
             
@@ -1736,7 +1737,7 @@ function plagiarism_urkund_get_file_object($plagiarismfile) {
                     WHERE userid = ?
                     AND courseworkid = ?';
                     
-            $submissionid = $DB->get_field_sql($sql, array($pf->cm, $cm->instance));
+            $submissionid = $DB->get_field_sql($sql, array($plagiarismfile->cm, $cm->instance));
             
             $files = $fs->get_area_files($modulecontext->id, 'mod_coursework', 'submission', $submissionid);
             foreach ($files as $file) {
